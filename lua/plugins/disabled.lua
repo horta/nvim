@@ -5,6 +5,9 @@ return {
   { "folke/flash.nvim", enabled = false },
   { "folke/noice.nvim", enabled = false },
   -- { "folke/trouble.nvim", enabled = false },
-  { "echasnovski/mini.surround", enabled = false },
+  -- { "echasnovski/mini.surround", enabled = false },
   { "echasnovski/mini.pairs", enabled = false },
+  { "echasnovski/mini.pairs", enabled = false },
+  -- { "markdown-preview.nvim", enabled = false },
+  -- { "MeanderingProgrammer/render-markdown.nvim", enabled = false },
 }
