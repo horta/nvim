@@ -60,6 +60,73 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
   end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "python",
+  callback = function(ev)
+    -- Insert breakpoint() on next line
+    vim.keymap.set("n", "<leader>tD", function()
+      local row = vim.api.nvim_win_get_cursor(0)[1]
+      local curr = vim.api.nvim_buf_get_lines(0, row - 1, row, false)[1] or ""
+      local nextl = vim.api.nvim_buf_get_lines(0, row, row + 1, false)[1] or ""
+
+      local function get_sw(buf)
+        local s = vim.bo[buf].shiftwidth
+        if s == 0 then
+          s = vim.bo[buf].tabstop
+        end
+        return s
+      end
+
+      -- If current line is blank (only whitespace), use next line's indent.
+      local curr_is_blank = curr:match("^%s*$") ~= nil
+      local base = curr_is_blank and nextl or curr
+
+      local indent = base:match("^%s*") or ""
+      local bp_indent = indent
+
+      -- Only add extra indent when the *current* line is non-blank and ends with ":"
+      if (not curr_is_blank) and curr:match(":%s*$") then
+        bp_indent = indent .. string.rep(" ", get_sw(ev.buf))
+      end
+
+      vim.api.nvim_buf_set_lines(0, row, row, false, { bp_indent .. "breakpoint()" })
+    end, { buffer = ev.buf, desc = "Insert breakpoint() on next line" })
+
+    -- Insert breakpoint() on previous line (unchanged)
+    vim.keymap.set("n", "<leader>td", function()
+      local row = vim.api.nvim_win_get_cursor(0)[1]
+      local curr = vim.api.nvim_buf_get_lines(0, row - 1, row, false)[1] or ""
+      local prev = ""
+      if row > 1 then
+        prev = vim.api.nvim_buf_get_lines(0, row - 2, row - 1, false)[1] or ""
+      end
+
+      local function sw(buf)
+        local s = vim.bo[buf].shiftwidth
+        if s == 0 then
+          s = vim.bo[buf].tabstop
+        end
+        return s
+      end
+
+      -- If the previous line is blank (only whitespace), use current line's indent.
+      local use_curr_indent = prev:match("^%s*$") ~= nil
+      local base = use_curr_indent and curr or prev
+
+      local indent = base:match("^%s*") or ""
+      local bp_indent = indent
+
+      -- Only apply the extra indent if we're basing off a *non-blank* previous line
+      -- that ends with ":" (i.e., starting a new block).
+      if not use_curr_indent and prev:match(":%s*$") then
+        bp_indent = indent .. string.rep(" ", sw(0))
+      end
+
+      vim.api.nvim_buf_set_lines(0, row - 1, row - 1, false, { bp_indent .. "breakpoint()" })
+    end, { buffer = ev.buf, desc = "Insert breakpoint() on previous line" })
+  end,
+})
+
 local function commit_buffer_is_empty(bufnr)
   bufnr = bufnr or 0
 
