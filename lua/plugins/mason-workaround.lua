@@ -1,4 +1,11 @@
 return {
-  { "mason-org/mason.nvim", version = "^1.0.0" },
-  { "mason-org/mason-lspconfig.nvim", version = "^1.0.0" },
+  {
+    "mason-org/mason.nvim",
+    opts = {
+      registries = {
+        -- "file:/Users/horta/code/.fast-xdg/mason-registry",
+        "github:mason-org/mason-registry",
+      },
+    },
+  },
 }
