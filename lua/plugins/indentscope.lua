@@ -1,3 +1,3 @@
 return {
-  { "echasnovski/mini.indentscope", enabled = false },
+  { "nvim-mini/mini.indentscope", enabled = false },
 }
