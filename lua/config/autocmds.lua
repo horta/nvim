@@ -246,3 +246,21 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     end
   end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "toml" },
+  callback = function(ev)
+    -- Create buffer-local keymap that overrides LazyVim's default
+    local function open_terminal_at_python_root()
+      -- Use vim.fs.root() to find pyproject.toml or .git
+      local root = vim.fs.root(ev.buf, { "pyproject.toml", ".git" }) or vim.fn.getcwd()
+      require("snacks").terminal(nil, { cwd = root })
+    end
+
+    -- Override both common variations of Ctrl-/
+    vim.keymap.set("n", "<C-/>", open_terminal_at_python_root, { buffer = ev.buf, desc = "Terminal (Python Root)" })
+    vim.keymap.set("n", "<C-_>", open_terminal_at_python_root, { buffer = ev.buf, desc = "Terminal (Python Root)" })
+    vim.keymap.set("t", "<C-/>", open_terminal_at_python_root, { buffer = ev.buf, desc = "Terminal (Python Root)" })
+    vim.keymap.set("t", "<C-_>", open_terminal_at_python_root, { buffer = ev.buf, desc = "Terminal (Python Root)" })
+  end,
+})
