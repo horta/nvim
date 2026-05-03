@@ -3,7 +3,7 @@ return {
   { "lukas-reineke/indent-blankline.nvim", enabled = false },
   { "nvim-treesitter/nvim-treesitter-context", enabled = false },
   { "folke/flash.nvim", enabled = false },
-  { "folke/noice.nvim", enabled = false },
+  -- { "folke/noice.nvim", enabled = false },
   -- { "folke/trouble.nvim", enabled = false },
   -- { "nvim-mini/mini.surround", enabled = false },
   { "nvim-mini/mini.pairs", enabled = false },
