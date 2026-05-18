@@ -11,3 +11,4 @@ vim.cmd([[hi clear NormalNC]])
 -- vim.cmd([[autocmd TermOpen * setlocal nonumber norelativenumber]])
 vim.api.nvim_set_hl(0, "@string.special.url", { underline = false })
 vim.g.lazyvim_python_lsp = "pyright"
+vim.opt.foldopen:remove("hor")
