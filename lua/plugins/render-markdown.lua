@@ -6,6 +6,8 @@ return {
       conceallevel = { default = 0, rendered = 3 },
       concealcursor = { default = "", rendered = "" },
     },
+    sign = { enabled = false },
+    code = { border = "thick" },
   },
   config = function(_, opts)
     require("render-markdown").setup(opts)
