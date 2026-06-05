@@ -2,6 +2,9 @@ return {
   "nvim-lspconfig",
   opts = {
     inlay_hints = { enabled = false },
+    setup = {
+      gopls = function() end,
+    },
     servers = {
       ruff = {
         capabilities = {
